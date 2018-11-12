@@ -99,7 +99,7 @@ b tribAdd
 
 
 
-
+#in case user enters a value for n that is less than 3
 
 nLessThan3:
 beq $t3, 2, nEquals2
@@ -118,6 +118,8 @@ nEquals0:
 move $t4, $t0
 b end
 
+
+#prints the results
 end:
 
 li $v0, 4
