@@ -17,9 +17,9 @@ syscall
 li $v0, 5
 syscall
 
-move $t0, $v0
+move $s0, $v0
 
-blt $t0, $zero, trib0
+blt $s0, $zero, trib0
 
 #prompts user for tribonacci(1)
 trib1:
@@ -31,9 +31,9 @@ syscall
 li $v0, 5
 syscall
 
-move $t1, $v0
+move $s1, $v0
 
-blt $t1, $zero, trib1
+blt $s1, $zero, trib1
 
 
 #prompts user for tribonacci(2)
@@ -46,9 +46,9 @@ syscall
 li $v0, 5
 syscall
 
-move $t2, $v0
+move $s2, $v0
 
-blt $t2, $zero, trib2
+blt $s2, $zero, trib2
 
 
 #prompts user for n
@@ -61,33 +61,33 @@ syscall
 li $v0, 5
 syscall
 
-move $t3, $v0
+move $s3, $v0
 
-blt $t3, $zero, nTerm
+blt $s3, $zero, nTerm
 
 #in case the user sets n as 0, 1, or 2
-ble $t3, 2, nLessThan3
+ble $s3, 2, nLessThan3
 
 
-#$t7 = 0
+#$s7 = 0
 #subtracts 2 from n to account for the first 3 terms
-move $t7, $zero
-sub $t5, $t3, 2 
+move $s7, $zero
+addi $s5, $s3, -2 
 tribAdd:
-bge $t7, $t5, end
-#only executes while $t7 < n
+bge $s7, $s5, end
+#only executes while $s7 < n
 
-#adds trib 1, 2, and 3 and stores in $t4
-add $t4, $t0, $t1
-add $t4, $t4, $t2
+#adds trib 1, 2, and 3 and stores in $s4
+add $s4, $s0, $s1
+add $s4, $s4, $s2
 
 #sets trib0 = trib1, trib1 = trib2, and trib3 = $t4
-add $t0, $t1, $zero
-add $t1, $t2, $zero
-add $t2, $t4, $zero
+add $s0, $s1, $zero
+add $s1, $s2, $zero
+add $s2, $s4, $zero
 
 #i++
-add $t7, $t7, 1
+addi $s7, $s7, 1
 
 #loops back to beginning
 b tribAdd
@@ -102,20 +102,20 @@ b tribAdd
 #in case user enters a value for n that is less than 3
 
 nLessThan3:
-beq $t3, 2, nEquals2
-beq $t3, 1, nEquals1
-beq $t3, 0, nEquals0
+beq $s3, 2, nEquals2
+beq $s3, 1, nEquals1
+beq $s3, 0, nEquals0
 
 nEquals2:
-move $t4, $t2
+move $s4, $s2
 b end
 
 nEquals1:
-move $t4, $t1
+move $s4, $s1
 b end
 
 nEquals0:
-move $t4, $t0
+move $s4, $s0
 b end
 
 
@@ -127,7 +127,7 @@ la $a0, tribNTextStart
 syscall
 
 li $v0, 1
-move $a0, $t3
+move $a0, $s3
 syscall
 
 li $v0, 4
@@ -135,5 +135,8 @@ la $a0, tribNTextEnd
 syscall
 
 li $v0, 1
-move $a0, $t4
+move $a0, $s4
+syscall
+
+li $v0, 10
 syscall
